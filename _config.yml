@@ -25,6 +25,9 @@ description: >-
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "OCMS-blog" # the base hostname & protocol for your site, e.g. http://example.com
 markdown: kramdown
+assets:
+    sources:
+        _assets
 # Build settings
 theme: jekyll-theme-prettydocs
 plugins:
@@ -59,6 +62,7 @@ card_charts_intro: Perspectives and findings from internal research conducted at
 
 card_showcase_title: Bioinformatics Resources
 card_showcase_intro: Tutorials and how-to's for analysis of microbiome data.
+card_showcase_link: /bioinformatics
 
 card_faqs: false
 card_license: false
