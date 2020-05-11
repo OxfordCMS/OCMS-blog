@@ -4,6 +4,7 @@ title: About Us
 updated: 4 May 2020
 categories: about
 permalink: /about
+color: green
 ---
 
 # OCMS
