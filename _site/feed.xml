@@ -1,4 +1,473 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-05-12T09:12:44+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">OCMS blog</title><subtitle>This is where we, the OCMS, share our findings, perspectives, and training resources pertaining to microbiome research.</subtitle><entry><title type="html">DNA Requirements for 16S rRNA Gene Analysis</title><link href="http://localhost:4000/white_paper/DNA-Requirements-for-16S" rel="alternate" type="text/html" title="DNA Requirements for 16S rRNA Gene Analysis" /><published>2020-05-12T00:00:00+01:00</published><updated>2020-05-12T00:00:00+01:00</updated><id>http://localhost:4000/white_paper/INT001</id><content type="html" xml:base="http://localhost:4000/white_paper/DNA-Requirements-for-16S">&lt;p&gt;&lt;br /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Example 16S rRNA Analysis</title><link href="http://localhost:4000/bioinformatics/Example-16S-rRNA-Analysis" rel="alternate" type="text/html" title="Example 16S rRNA Analysis" /><published>2020-05-07T00:00:00+01:00</published><updated>2020-05-07T00:00:00+01:00</updated><id>http://localhost:4000/bioinformatics/16S-Example</id><content type="html" xml:base="http://localhost:4000/bioinformatics/Example-16S-rRNA-Analysis">&lt;html&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-05-12T20:37:42+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">OCMS blog</title><subtitle>This is where we, the OCMS, share our findings, perspectives, and training resources pertaining to microbiome research.</subtitle><entry><title type="html">Amplicon Sequence Variant Detection With DADA2</title><link href="http://localhost:4000/training/Amplicon-Sequence-Variant-Detection-With-DADA2" rel="alternate" type="text/html" title="Amplicon Sequence Variant Detection With DADA2" /><published>2020-05-12T00:00:00+01:00</published><updated>2020-05-12T00:00:00+01:00</updated><id>http://localhost:4000/training/ASV-tutorial</id><content type="html" xml:base="http://localhost:4000/training/Amplicon-Sequence-Variant-Detection-With-DADA2">&lt;h2 id=&quot;dada2-improving-taxonomic-resolution&quot;&gt;DADA2: Improving Taxonomic Resolution&lt;/h2&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
+
+&lt;p&gt;Clustering 16S sequences into OTUs has historically served two purposes:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;It has removed minor artifactual sequence variants due to PCR 
+amplification and sequencing errors.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;It has collapsed legitimate sequence variation that exists between 
+closely related bacterial taxa.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;While the latter may not always be desirable, it stands to reason that you
+can’t distinguish between bacterial taxa whose 16S sequences vary at a rate
+that is lower than the error encountered on a particular sequencing platform.&lt;/p&gt;
+
+&lt;p&gt;Recently, a number of tools have been developed with the goal of removing
+PCR and sequencing errors in 16S data (‘denoising’). Examples include 
+&lt;a href=&quot;https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4817710/&quot;&gt;Minimum entropy decomposition&lt;/a&gt;, &lt;a href=&quot;https://doi.org/10.1101/081257&quot;&gt;UNOISE&lt;/a&gt;, &lt;a href=&quot;https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4927377/&quot;&gt;DADA2&lt;/a&gt;, and
+&lt;a href=&quot;https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5340863/&quot;&gt;Deblur&lt;/a&gt;. For a recent comparison of some of these tools, see 
+&lt;a href=&quot;https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6087418/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;These approaches collectively claim it is now possible to distinguish
+between sequences that differ by as little as one nucleotide. In consequence, 
+they argue that denoised sequences (variously called exact sequence variants
+(ESVs), amplicon sequence variants (ASVs), or zero-radius OTUs (ZOTUs)) &lt;a href=&quot;https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5702726/&quot;&gt;should
+replace conventional OTUs as the unit of measurement in 16S studies&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;While the main practical session is focused on conventional OTU analysis. 
+This session contains an introduction to sequence analysis based on the
+&lt;a href=&quot;https://benjjneb.github.io/dada2/tutorial.html&quot;&gt;DADA2 pipeline&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;  &lt;a href=&quot;#header1&quot;&gt;1. Fetching Data for DADA2 Analysis&lt;/a&gt; &lt;br /&gt;
+  &lt;a href=&quot;#header2&quot;&gt;2. Open DADA2 and Plot Read Quality&lt;/a&gt; &lt;br /&gt;
+  &lt;a href=&quot;#header3&quot;&gt;3. Trim and filter forward and reverse reads based on quality&lt;/a&gt; &lt;br /&gt;
+  &lt;a href=&quot;#header4&quot;&gt;4. Denoise reads with DADA2&lt;/a&gt; &lt;br /&gt;
+  &lt;a href=&quot;#header5&quot;&gt;5. Genererate amplicons and create an abundance matrix&lt;/a&gt; &lt;br /&gt;
+  &lt;a href=&quot;#header6&quot;&gt;6. Assign Taxonomy to DADA2 Amplicon Sequence Variants&lt;/a&gt; &lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;  &lt;a href=&quot;#header7&quot;&gt;Conlusions&lt;/a&gt; &lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;h1 id=&quot;1-fetching-data-for-dada2-analysis-&quot;&gt;1. Fetching Data for DADA2 Analysis &lt;a name=&quot;header1&quot;&gt;&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p&gt;For this session we’ll use a slightly different set of input samples.
+Start by creating a run directory and copying the data to this location.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# Create a working directory for this session&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~/MCA/16s/
+&lt;span class=&quot;nb&quot;&gt;mkdir &lt;/span&gt;Session1.3
+&lt;span class=&quot;nb&quot;&gt;mkdir &lt;/span&gt;Session1.3/fastqs
+&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;Session1.3/fastqs
+
+&lt;span class=&quot;c&quot;&gt;# Copy the fastq files for three samples to this location&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cp&lt;/span&gt; ~/additional_data/sample&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Note these files are gzip compressed, but it is still possible to view them&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# using the linux pipe.&lt;/span&gt;
+zcat sample1_trimmed.fastq.1.gz | &lt;span class=&quot;nb&quot;&gt;head&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-4&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;h1 id=&quot;2-open-dada2-and-plot-read-quality-&quot;&gt;2. Open DADA2 and Plot Read Quality &lt;a name=&quot;header2&quot;&gt;&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p&gt;As the DADA2 package is written entirely in R, most of this session will be
+carried out in RStudio.&lt;/p&gt;
+
+&lt;p&gt;Nagivate to your RStudio session and open a new R script.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/new_rscript.png&quot; alt=&quot;RStudio&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Remember, you can write (and comment!) code in your new R script then run it via
+the R terminal, either by copying and pasting it across, or by highlighting 
+it and selecting the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Run&lt;/code&gt; icon in the top-right side of your script window.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/rstudio_run.png&quot; alt=&quot;RStudio&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;Having opened RStudio, set your working directory to be the location of
+the run directory created in step 1.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# Find out which working directory R is running in? &lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getwd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;# Set your working directory and check the contents&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setwd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'~/MCA/16s/Session1.3'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;list.files&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'.'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;list.files&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'./fastqs'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Note that the fastq files have been trimmed to remove PCR and sequencing primers.
+However, they have not been trimmed to remove low quality sequences at the 3’
+end of reads. We will use the DADA2 function &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;plotQualityProfile()&lt;/code&gt; to visualize
+the distribution in quality at each base in the forward and reverse reads from
+the first sample.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# Create avectors in R containing details of forward and reverse reads&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fastq1&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;list.files&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'fastqs'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pattern&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'.fastq.1.gz'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;full.names&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fastq2&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;list.files&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'fastqs'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pattern&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'.fastq.2.gz'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;full.names&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;# Plot the read quality distribution for each sample pair&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;plotQualityProfile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fastq1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fastq2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/dada2_quality_plot.png&quot; alt=&quot;RStudio&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In this plot lines show the mean (green), median (orange) and 25th/75th 
+percentiles (dashed) of the quality score at each base position in the forward
+and reverse reads.&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;h1 id=&quot;a-side-note-on-handling-data-with-r&quot;&gt;A side note on handling data with R&lt;/h1&gt;
+
+&lt;p&gt;When working on the bash command line, we have tended to use for loops to run 
+the same command for multiple samples. R is not optimised for running for loops
+and it takes a fundamentally different approach. For further discussion of why 
+this is have a look at the &lt;a href=&quot;https://towardsdatascience.com/dealing-with-apply-functions-in-r-ea99d3f49a71&quot;&gt;family of apply functions in R&lt;/a&gt;, as well as the
+fundamentals of the &lt;a href=&quot;https://www.jstatsoft.org/article/view/v040i01&quot;&gt;split-apply-combine stragegy&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;For the purposes of this practical session note that, rather than using a for loop
+to run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;plotQualityProfile()&lt;/code&gt; above, we passed all the files to the function as a
+single character vector. This is typical of how R deals with repetitive tasks.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;h1 id=&quot;3-trim-and-filter-forward-and-reverse-reads-based-on-quality&quot;&gt;3. Trim and filter forward and reverse reads based on quality&lt;a name=&quot;header3&quot;&gt;&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p&gt;The first step in processing reads with DADA2 is to remove poor quality sequence.
+In our main 16S analysis session this step wasn’t performed. Instead we were relying 
+on the FLASh assembler and downstream OTU calling to account for low quality sequence.&lt;/p&gt;
+
+&lt;p&gt;Similar to our bash code, it’s necessary to define the names of input and output
+files before running the filtering step.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# Create a subdirectory from within R to contain quality trimmed sequences&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dir.create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'fastqs_trimmed'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;# This subdirectory now appears in your working directory&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;list.files&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'.'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;list.files&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'./fastqs_trimmed'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;# Fetch a list of sample names from the list of forward reads&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sample.names&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sapply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;strsplit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;basename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fastq1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'_'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;`[`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;# Create vectors of output filenames for both forward and reverse reads&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fastq1.filtered&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;file.path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'fastqs_trimmed'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;paste0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sample.names&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'.fastq.1.gz'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fastq2.filtered&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;file.path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'fastqs_trimmed'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;paste0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sample.names&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'.fastq.2.gz'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;# Run quality trimming and filtering in DADA2&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;filterAndTrim&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fwd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fastq1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;filt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fastq1.filtered&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; 
+       		     &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rev&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fastq2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;filt.rev&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fastq2.filtered&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+                     &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;truncLen&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;260&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;260&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; 
+		     &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;maxEE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+                     &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;multithread&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;list.files&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'./fastqs_trimmed'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;In the code above, we’ve set the minimum permissible truncated length of for a
+sequence to be 260bp for both forward and reverse reads. These were originally
+2x300bp reads generated on the Illumina MiSeq platform to span the (~500bp) V1-V3
+region. However, 20bp has been trimmed from the 5’ end of each read during adapter
+removal. This minimum lengths used above have therefore been selected to ensure (minimal!) 
+overlap between reads during amplicon assembly.&lt;/p&gt;
+
+&lt;p&gt;The histogram below shows a typical distribution in the length of amplicons generated 
+from a human gut microbiome study.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/histogram.png&quot; alt=&quot;RStudio&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;What biases may be introduced by setting a stringent &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;truncLen&lt;/code&gt; value?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;For more information on the arguments supplied in the quality trimming and filtering
+step type &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;?filterAndTrim&lt;/code&gt; into the R terminal.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Try altering &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;truncLen&lt;/code&gt; and replacing &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;maxEE&lt;/code&gt; with a minimum quality score (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;minQ&lt;/code&gt;)
+to see what effect these parameters have on the number of reads remaining after filtering.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;h1 id=&quot;4-denoise-reads-with-dada2&quot;&gt;4. Denoise reads with DADA2&lt;a name=&quot;header4&quot;&gt;&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p&gt;Denoising  in DADA2 is a two step process, first it models the expected error the 
+forward and reverse reads, then it removes this error to create a ‘corrected’ read set.
+For further detail see the methods and supplementary material in the original 
+&lt;a href=&quot;https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4927377/&quot;&gt;DADA2 publication&lt;/a&gt;.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# Model error in forward and reverse reads&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;error1&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;learnErrors&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fastq1.filtered&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;error2&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;learnErrors&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fastq2.filtered&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;# Remove exact replicate sequences&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dereplicated1&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;derepFastq&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fastq1.filtered&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;verbose&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;names&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dereplicated1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sample.names&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dereplicated2&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;derepFastq&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fastq2.filtered&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;verbose&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;names&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dereplicated2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sample.names&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;# Then apply the DADA2 denoising algorithm&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;corrected1&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dada&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dereplicated1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;error1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;corrected2&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dada&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dereplicated2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;error2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;corrected1&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;corrected2&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;h1 id=&quot;5-genererate-amplicons-and-create-an-abundance-matrix&quot;&gt;5. Genererate amplicons and create an abundance matrix&lt;a name=&quot;header5&quot;&gt;&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p&gt;Having corrected sequencing errors in forward and reverse reads, the remaining
+steps are to merge read pairs into amplicons, remove chimeras, and to calculate
+the abundance of each amplicon in each sample.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# Combine the forward and reverse read into a single set of amplicons&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;amplicons&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mergePairs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dadaF&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;corrected1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;derepF&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dereplicated1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+                        &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dadaR&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;corrected2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;derepR&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dereplicated2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+                        &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;verbose&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;# Generate a count matrix containing the counts for each denoised sequence&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sequence.tab&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;makeSequenceTable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;amplicons&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;orderBy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'abundance'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;# The rows of this matrix are the samples&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rownames&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sequence.tab&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;# The columns are the sequences&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;colnames&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sequence.tab&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;# Remove chimeras directly from the count.matrix&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sequence.tab.nochimeras&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;removeBimeraDenovo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sequence.tab&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;verbose&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;# Finally, it's possible to write the denoised amplicons to a fasta file&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uniquesToFasta&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getUniques&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sequence.tab.nochimeras&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'dada2_esvs.fasta'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;How many unique amplicons were created using the DADA2 denoising pipeline?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;h1 id=&quot;6-assign-taxonomy-to-dada2-amplicon-sequence-variants&quot;&gt;6. Assign Taxonomy to DADA2 Amplicon Sequence Variants&lt;a name=&quot;header6&quot;&gt;&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p&gt;Within the DADA2 pipeline, it is also possible to assign taxonomy to denoised
+sequences via a two step process. The first step &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;assignTaxonomy()&lt;/code&gt; is a wrapper
+for the method introduced in our previous 16 analysis session. As this method only returns classifications
+to genus level. The second step &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;addSpecies()&lt;/code&gt; attempts to find exact matches
+for each sequence in a curated reference database.&lt;/p&gt;
+
+&lt;p&gt;First, it’s necessary to retrieve the reference databases for taxonomic and species
+assignment. A selection of formatted reference databases can be found &lt;a href=&quot;https://benjjneb.github.io/dada2/training.html&quot;&gt;here&lt;/a&gt;.
+In this example we will begin by downloading reference databases derived from the 
+NCBI 16S database and the RDP database.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# In your bash terminal cd into the current working directory&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~/MCA/16s/Session1.3
+
+&lt;span class=&quot;c&quot;&gt;# Download the database used to train the RDP classifier&lt;/span&gt;
+curl &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-J&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; https://zenodo.org/record/2541239/files/RefSeq-RDP16S_v2_May2018.fa.gz?download&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1
+&lt;span class=&quot;c&quot;&gt;# Download the database used for exact sequence matching&lt;/span&gt;
+curl &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-J&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; https://zenodo.org/record/2658728/files/RefSeq-RDP_dada2_assignment_species.fa.gz?download&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1
+
+&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Having downloaded the reference databases, return to R to perform taxonomic assignment.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# Assign taxonomy to genus level&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;taxonomy.table&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;assignTaxonomy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;seqs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sequence.tab.nochimeras&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+                       &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;refFasta&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;RefSeq-RDP16S_v2_May2018.fa.gz&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+                       &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;multithread&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;# Assign species via exact matching&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;taxonomy.table&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;addSpecies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;taxtab&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;taxonomy.table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; 
+                             &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;refFasta&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;RefSeq-RDP_dada2_assignment_species.fa.gz&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; 
+                             &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;verbose&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;# As row names in the resulting table are the sequences&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;# remove them before viewing.&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;taxa.print&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;taxa&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row.names&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;taxa.print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;taxa.print&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;as.data.frame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;taxa.print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;View&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;taxa.print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;Alternatively, it is possible to assign taxonomy to the denoised amplicon 
+sequences by using the NCBI nucleotide BLAST tool. This can be done by copying and
+pasting individual sequences into the &lt;a href=&quot;https://blast.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=blastn&amp;amp;PAGE_TYPE=BlastSearch&amp;amp;LINK_LOC=blasthome&quot;&gt;online BLAST portal&lt;/a&gt;. Then selecting 
+the highly-curated NCBI 16S rRNA database as a reference.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/blast_image.png&quot; alt=&quot;BLAST&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Try running BLAST for the most and least abundant ASVs in your output fasta file.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Try running BLAST against the NCBI Nucleotide collection database, rather than the
+16S rRNA database.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Note that it’s  also possible to install BLAST locally and run it from  the
+&lt;a href=&quot;https://www.ncbi.nlm.nih.gov/books/NBK279671/&quot;&gt;commandline&lt;/a&gt;. However, if you do this, for taxonomic assignment, 
+&lt;a href=&quot;https://academic.oup.com/bioinformatics/article/35/9/1613/5106166&quot;&gt;be very careful about the arguments you provide&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusions&quot;&gt;Conclusions&lt;a name=&quot;header7&quot;&gt;&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;DADA2 and other denoising algorithms provide a different approach to dealing with 
+sequencing error compared to more traditional OTU-based analysis.&lt;/p&gt;
+
+&lt;p&gt;In OTU analysis sequencing error is removed by collapsing sequences at an identity
+threshold that is (hopefully!) higher than the error rate encountered on a particular 
+sequencing platform. DADA2 models this error before removing it from each (unique) 
+sequence.&lt;/p&gt;
+
+&lt;p&gt;Both approaches have strengths and weaknesses. Proponents of denoising
+algorithms argue that they have two major theoretical advantages:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;First, they remove the need to collapse legitimate sequence variation that may occur 
+between closely related taxa. This enables finer taxonomic resolution in 16S studies.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Second, the ability to identify exact sequences means sequences can be
+compared across studies. By contrast, the manner in which OTUs are generated means they
+are  unique to the study in which they are derived.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;While these are significant advantages, biological judgement is required when 
+interpreting denoised amplicon data. For example, how many of the denoised amplicon 
+sequences could confidently be classified to species level? To what extent does this 
+depend on the completness and accuracy of the 16S rRNA reference databases?&lt;/p&gt;
+
+&lt;p&gt;Another interesting point to consider is that the three samples analyzed in this session were
+drawn from a mock community made up of 36 bacterial species. The list of included 
+species is given below:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt; &lt;/th&gt;
+      &lt;th&gt; &lt;/th&gt;
+      &lt;th&gt; &lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Actinomyces naeslundii MG-1&lt;/td&gt;
+      &lt;td&gt;Akkermansia muciniphila&lt;/td&gt;
+      &lt;td&gt;Bacteroides caccae&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Bacteroides vulgatus&lt;/td&gt;
+      &lt;td&gt;Bifidobacterium dentium&lt;/td&gt;
+      &lt;td&gt;Bifidobacterium longum subsp. infantis&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Corynebacterium accolens&lt;/td&gt;
+      &lt;td&gt;Corynebacterium amycolatum&lt;/td&gt;
+      &lt;td&gt;Corynebacterium matruchotti&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Enterococcus faecalis&lt;/td&gt;
+      &lt;td&gt;Escherichia coli&lt;/td&gt;
+      &lt;td&gt;Eubacterium brachy&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Faecalibacterium prausnitzii&lt;/td&gt;
+      &lt;td&gt;Fusobacterium nucleatum subsp. nucleatum&lt;/td&gt;
+      &lt;td&gt;Gardnerella vaginalis&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Lactobacillus crispatus&lt;/td&gt;
+      &lt;td&gt;Lactobacillus gasseri&lt;/td&gt;
+      &lt;td&gt;Lactobacillus iners&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Lactobacillus jensenii&lt;/td&gt;
+      &lt;td&gt;Lautropia mirabilis&lt;/td&gt;
+      &lt;td&gt;Moraxella catarrhalis&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Porphyromonas gingivalis&lt;/td&gt;
+      &lt;td&gt;Prevotella melaninogenica&lt;/td&gt;
+      &lt;td&gt;Prevotella nigrescens&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Prevotella oralis&lt;/td&gt;
+      &lt;td&gt;Propionibacterium acnes&lt;/td&gt;
+      &lt;td&gt;Rothia dentocariosa&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Ruminococcus lactaris&lt;/td&gt;
+      &lt;td&gt;Staphylococcus aureus subsp. aureus&lt;/td&gt;
+      &lt;td&gt;Streptococcus agalactiae&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Streptococcus mutans&lt;/td&gt;
+      &lt;td&gt;Streptococcus pneumoniae&lt;/td&gt;
+      &lt;td&gt;Streptococcus sanguinis&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Tannerella forsythia&lt;/td&gt;
+      &lt;td&gt;Treponema denticola&lt;/td&gt;
+      &lt;td&gt;Veillonella parvula&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;How many ASVs were generated by DADA2 compared to the number of species in this community?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;How many of the species above were identified by the different taxonomic classification approaches?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;What happens when you run these three samples through the OTU pipeline introduced in the main session?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;What happens when you increase the identity threshold used for OTU clustering from 97% to 99%?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;One final point to consider when interpreting ASVs is that many bacteria contain multiple copies of the
+16S gene that &lt;a href=&quot;https://www.ncbi.nlm.nih.gov/pmc/articles/PMC387781/&quot;&gt;may vary in their sequence composition&lt;/a&gt;. The image below shows the 
+observed (left) and predicted (right) frequency of nucleotide substitutions occurring across the seven
+(~1500bp) 16S genes present in the genome of Escherichia coli strain K-12 subst. MG1655. In total five of these 
+seven 16S genes are unique, while the remaining two are identical.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/e_coli.png&quot; alt=&quot;Ecoli&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;How many E. coli ASVs were detected by DADA2?&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">DADA2: Improving Taxonomic Resolution Introduction Clustering 16S sequences into OTUs has historically served two purposes: It has removed minor artifactual sequence variants due to PCR amplification and sequencing errors. It has collapsed legitimate sequence variation that exists between closely related bacterial taxa. While the latter may not always be desirable, it stands to reason that you can’t distinguish between bacterial taxa whose 16S sequences vary at a rate that is lower than the error encountered on a particular sequencing platform. Recently, a number of tools have been developed with the goal of removing PCR and sequencing errors in 16S data (‘denoising’). Examples include Minimum entropy decomposition, UNOISE, DADA2, and Deblur. For a recent comparison of some of these tools, see here. These approaches collectively claim it is now possible to distinguish between sequences that differ by as little as one nucleotide. In consequence, they argue that denoised sequences (variously called exact sequence variants (ESVs), amplicon sequence variants (ASVs), or zero-radius OTUs (ZOTUs)) should replace conventional OTUs as the unit of measurement in 16S studies. While the main practical session is focused on conventional OTU analysis. This session contains an introduction to sequence analysis based on the DADA2 pipeline.   1. Fetching Data for DADA2 Analysis   2. Open DADA2 and Plot Read Quality   3. Trim and filter forward and reverse reads based on quality   4. Denoise reads with DADA2   5. Genererate amplicons and create an abundance matrix   6. Assign Taxonomy to DADA2 Amplicon Sequence Variants   Conlusions 1. Fetching Data for DADA2 Analysis For this session we’ll use a slightly different set of input samples. Start by creating a run directory and copying the data to this location. # Create a working directory for this session cd ~/MCA/16s/ mkdir Session1.3 mkdir Session1.3/fastqs cd Session1.3/fastqs # Copy the fastq files for three samples to this location cp ~/additional_data/sample* . # Note these files are gzip compressed, but it is still possible to view them # using the linux pipe. zcat sample1_trimmed.fastq.1.gz | head -4 2. Open DADA2 and Plot Read Quality As the DADA2 package is written entirely in R, most of this session will be carried out in RStudio. Nagivate to your RStudio session and open a new R script. Remember, you can write (and comment!) code in your new R script then run it via the R terminal, either by copying and pasting it across, or by highlighting it and selecting the Run icon in the top-right side of your script window. Having opened RStudio, set your working directory to be the location of the run directory created in step 1. # Find out which working directory R is running in? getwd() # Set your working directory and check the contents setwd('~/MCA/16s/Session1.3') list.files('.') list.files('./fastqs') Note that the fastq files have been trimmed to remove PCR and sequencing primers. However, they have not been trimmed to remove low quality sequences at the 3’ end of reads. We will use the DADA2 function plotQualityProfile() to visualize the distribution in quality at each base in the forward and reverse reads from the first sample. # Create avectors in R containing details of forward and reverse reads fastq1 &amp;lt;- sort(list.files('fastqs', pattern='.fastq.1.gz', full.names=T)) fastq2 &amp;lt;- sort(list.files('fastqs', pattern='.fastq.2.gz', full.names=T)) # Plot the read quality distribution for each sample pair plotQualityProfile(c(fastq1, fastq2)) In this plot lines show the mean (green), median (orange) and 25th/75th percentiles (dashed) of the quality score at each base position in the forward and reverse reads. A side note on handling data with R When working on the bash command line, we have tended to use for loops to run the same command for multiple samples. R is not optimised for running for loops and it takes a fundamentally different approach. For further discussion of why this is have a look at the family of apply functions in R, as well as the fundamentals of the split-apply-combine stragegy. For the purposes of this practical session note that, rather than using a for loop to run plotQualityProfile() above, we passed all the files to the function as a single character vector. This is typical of how R deals with repetitive tasks. 3. Trim and filter forward and reverse reads based on quality The first step in processing reads with DADA2 is to remove poor quality sequence. In our main 16S analysis session this step wasn’t performed. Instead we were relying on the FLASh assembler and downstream OTU calling to account for low quality sequence. Similar to our bash code, it’s necessary to define the names of input and output files before running the filtering step. # Create a subdirectory from within R to contain quality trimmed sequences dir.create('fastqs_trimmed') # This subdirectory now appears in your working directory list.files('.') list.files('./fastqs_trimmed') # Fetch a list of sample names from the list of forward reads sample.names &amp;lt;- sapply(strsplit(basename(fastq1), '_'), `[`, 1) # Create vectors of output filenames for both forward and reverse reads fastq1.filtered &amp;lt;- file.path('fastqs_trimmed', paste0(sample.names, '.fastq.1.gz')) fastq2.filtered &amp;lt;- file.path('fastqs_trimmed', paste0(sample.names, '.fastq.2.gz')) # Run quality trimming and filtering in DADA2 out &amp;lt;- filterAndTrim(fwd=fastq1, filt=fastq1.filtered, rev=fastq2, filt.rev=fastq2.filtered, truncLen=c(260, 260), maxEE=c(2,2), multithread=T) list.files('./fastqs_trimmed') print(out) In the code above, we’ve set the minimum permissible truncated length of for a sequence to be 260bp for both forward and reverse reads. These were originally 2x300bp reads generated on the Illumina MiSeq platform to span the (~500bp) V1-V3 region. However, 20bp has been trimmed from the 5’ end of each read during adapter removal. This minimum lengths used above have therefore been selected to ensure (minimal!) overlap between reads during amplicon assembly. The histogram below shows a typical distribution in the length of amplicons generated from a human gut microbiome study. What biases may be introduced by setting a stringent truncLen value? For more information on the arguments supplied in the quality trimming and filtering step type ?filterAndTrim into the R terminal. Try altering truncLen and replacing maxEE with a minimum quality score (minQ) to see what effect these parameters have on the number of reads remaining after filtering. 4. Denoise reads with DADA2 Denoising in DADA2 is a two step process, first it models the expected error the forward and reverse reads, then it removes this error to create a ‘corrected’ read set. For further detail see the methods and supplementary material in the original DADA2 publication. # Model error in forward and reverse reads error1 &amp;lt;- learnErrors(fastq1.filtered) error2 &amp;lt;- learnErrors(fastq2.filtered) # Remove exact replicate sequences dereplicated1 &amp;lt;- derepFastq(fastq1.filtered, verbose=T) names(dereplicated1) &amp;lt;- sample.names dereplicated2 &amp;lt;- derepFastq(fastq2.filtered, verbose=T) names(dereplicated2) &amp;lt;- sample.names # Then apply the DADA2 denoising algorithm corrected1 &amp;lt;- dada(dereplicated1, err=error1) corrected2 &amp;lt;- dada(dereplicated2, err=error2) corrected1 corrected2 5. Genererate amplicons and create an abundance matrix Having corrected sequencing errors in forward and reverse reads, the remaining steps are to merge read pairs into amplicons, remove chimeras, and to calculate the abundance of each amplicon in each sample. # Combine the forward and reverse read into a single set of amplicons amplicons &amp;lt;- mergePairs(dadaF=corrected1, derepF=dereplicated1, dadaR=corrected2, derepR=dereplicated2, verbose=T) # Generate a count matrix containing the counts for each denoised sequence sequence.tab &amp;lt;- makeSequenceTable(amplicons, orderBy='abundance') # The rows of this matrix are the samples rownames(sequence.tab) # The columns are the sequences colnames(sequence.tab) # Remove chimeras directly from the count.matrix sequence.tab.nochimeras &amp;lt;- removeBimeraDenovo(sequence.tab, verbose=T) # Finally, it's possible to write the denoised amplicons to a fasta file uniquesToFasta(getUniques(sequence.tab.nochimeras), 'dada2_esvs.fasta') How many unique amplicons were created using the DADA2 denoising pipeline? 6. Assign Taxonomy to DADA2 Amplicon Sequence Variants Within the DADA2 pipeline, it is also possible to assign taxonomy to denoised sequences via a two step process. The first step assignTaxonomy() is a wrapper for the method introduced in our previous 16 analysis session. As this method only returns classifications to genus level. The second step addSpecies() attempts to find exact matches for each sequence in a curated reference database. First, it’s necessary to retrieve the reference databases for taxonomic and species assignment. A selection of formatted reference databases can be found here. In this example we will begin by downloading reference databases derived from the NCBI 16S database and the RDP database. # In your bash terminal cd into the current working directory cd ~/MCA/16s/Session1.3 # Download the database used to train the RDP classifier curl -O -J -L https://zenodo.org/record/2541239/files/RefSeq-RDP16S_v2_May2018.fa.gz?download=1 # Download the database used for exact sequence matching curl -O -J -L https://zenodo.org/record/2658728/files/RefSeq-RDP_dada2_assignment_species.fa.gz?download=1 ls -l Having downloaded the reference databases, return to R to perform taxonomic assignment. # Assign taxonomy to genus level taxonomy.table &amp;lt;- assignTaxonomy(seqs=sequence.tab.nochimeras, refFasta=&quot;RefSeq-RDP16S_v2_May2018.fa.gz&quot;, multithread=T) # Assign species via exact matching taxonomy.table &amp;lt;- addSpecies(taxtab=taxonomy.table, refFasta=&quot;RefSeq-RDP_dada2_assignment_species.fa.gz&quot;, verbose=T) # As row names in the resulting table are the sequences # remove them before viewing. taxa.print &amp;lt;- taxa row.names(taxa.print) &amp;lt;- NULL taxa.print &amp;lt;- as.data.frame(taxa.print) View(taxa.print) Alternatively, it is possible to assign taxonomy to the denoised amplicon sequences by using the NCBI nucleotide BLAST tool. This can be done by copying and pasting individual sequences into the online BLAST portal. Then selecting the highly-curated NCBI 16S rRNA database as a reference. Try running BLAST for the most and least abundant ASVs in your output fasta file. Try running BLAST against the NCBI Nucleotide collection database, rather than the 16S rRNA database. Note that it’s also possible to install BLAST locally and run it from the commandline. However, if you do this, for taxonomic assignment, be very careful about the arguments you provide. Conclusions DADA2 and other denoising algorithms provide a different approach to dealing with sequencing error compared to more traditional OTU-based analysis. In OTU analysis sequencing error is removed by collapsing sequences at an identity threshold that is (hopefully!) higher than the error rate encountered on a particular sequencing platform. DADA2 models this error before removing it from each (unique) sequence. Both approaches have strengths and weaknesses. Proponents of denoising algorithms argue that they have two major theoretical advantages: First, they remove the need to collapse legitimate sequence variation that may occur between closely related taxa. This enables finer taxonomic resolution in 16S studies. Second, the ability to identify exact sequences means sequences can be compared across studies. By contrast, the manner in which OTUs are generated means they are unique to the study in which they are derived. While these are significant advantages, biological judgement is required when interpreting denoised amplicon data. For example, how many of the denoised amplicon sequences could confidently be classified to species level? To what extent does this depend on the completness and accuracy of the 16S rRNA reference databases? Another interesting point to consider is that the three samples analyzed in this session were drawn from a mock community made up of 36 bacterial species. The list of included species is given below:       Actinomyces naeslundii MG-1 Akkermansia muciniphila Bacteroides caccae Bacteroides vulgatus Bifidobacterium dentium Bifidobacterium longum subsp. infantis Corynebacterium accolens Corynebacterium amycolatum Corynebacterium matruchotti Enterococcus faecalis Escherichia coli Eubacterium brachy Faecalibacterium prausnitzii Fusobacterium nucleatum subsp. nucleatum Gardnerella vaginalis Lactobacillus crispatus Lactobacillus gasseri Lactobacillus iners Lactobacillus jensenii Lautropia mirabilis Moraxella catarrhalis Porphyromonas gingivalis Prevotella melaninogenica Prevotella nigrescens Prevotella oralis Propionibacterium acnes Rothia dentocariosa Ruminococcus lactaris Staphylococcus aureus subsp. aureus Streptococcus agalactiae Streptococcus mutans Streptococcus pneumoniae Streptococcus sanguinis Tannerella forsythia Treponema denticola Veillonella parvula How many ASVs were generated by DADA2 compared to the number of species in this community? How many of the species above were identified by the different taxonomic classification approaches? What happens when you run these three samples through the OTU pipeline introduced in the main session? What happens when you increase the identity threshold used for OTU clustering from 97% to 99%? One final point to consider when interpreting ASVs is that many bacteria contain multiple copies of the 16S gene that may vary in their sequence composition. The image below shows the observed (left) and predicted (right) frequency of nucleotide substitutions occurring across the seven (~1500bp) 16S genes present in the genome of Escherichia coli strain K-12 subst. MG1655. In total five of these seven 16S genes are unique, while the remaining two are identical. How many E. coli ASVs were detected by DADA2?</summary></entry><entry><title type="html">DNA Requirements for 16S rRNA Gene Analysis</title><link href="http://localhost:4000/white_paper/DNA-Requirements-for-16S" rel="alternate" type="text/html" title="DNA Requirements for 16S rRNA Gene Analysis" /><published>2020-05-12T00:00:00+01:00</published><updated>2020-05-12T00:00:00+01:00</updated><id>http://localhost:4000/white_paper/INT001</id><content type="html" xml:base="http://localhost:4000/white_paper/DNA-Requirements-for-16S">&lt;p&gt;&lt;br /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Example 16S rRNA Analysis</title><link href="http://localhost:4000/bioinformatics/Example-16S-rRNA-Analysis" rel="alternate" type="text/html" title="Example 16S rRNA Analysis" /><published>2020-05-07T00:00:00+01:00</published><updated>2020-05-07T00:00:00+01:00</updated><id>http://localhost:4000/bioinformatics/16S-Example</id><content type="html" xml:base="http://localhost:4000/bioinformatics/Example-16S-rRNA-Analysis">&lt;html&gt;
 
 
 &lt;body&gt;

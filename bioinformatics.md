@@ -1,6 +1,6 @@
 ---
 layout: bioinformatics
-title: Bioinformatics Resources
+title: Bioinformatics
 categories: bioinformatics
 permalink: /bioinformatics
 color: turquoise
