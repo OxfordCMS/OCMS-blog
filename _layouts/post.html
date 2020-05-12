@@ -1,94 +1,64 @@
-{% if page.color != null %}
-    {% assign color = page.color | prepend: 'body-' %}
-{% else %}
-    {% assign color = '' %}
-{% endif %}
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>{{ site.title | prepend: " - " | prepend: page.title }}</title>
-    <!-- Meta -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="{{ site.description }}">
-    <meta name="author" content="{{ site.email }}">
-    <link rel="shortcut icon" href="favicon.ico">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-    <!-- FontAwesome JS -->
-    <script defer src="https://use.fontawesome.com/releases/v5.1.1/js/all.js" integrity="sha384-BtvRZcyfv4r0x/phJt9Y9HhnN5ur1Z+kZbKVgzVBAlQZX4jvAuImlIz+bG7TS00a" crossorigin="anonymous"></script>
-    <!-- Global CSS -->
-    <link rel="stylesheet" href="{{ 'assets/plugins/bootstrap/css/bootstrap.min.css' | prepend: site.baseurl }}">
-    <!-- Plugins CSS -->
-    <link rel="stylesheet" href="{{ 'assets/plugins/elegant_font/css/style.css' | prepend: site.baseurl }}">
-    <link rel="stylesheet" href="{{ 'assets/plugins/prism/prism.css' | prepend: site.baseurl }}">
-    <link rel="stylesheet" href="{{ 'assets/plugins/lightbox/dist/ekko-lightbox.css' | prepend: site.baseurl }}">
+<html lang="{{ site.lang | default: "en-US" }}">
+  <head>
 
-    <!-- Theme CSS -->
-    <link id="theme-style" rel="stylesheet" href="{{ 'assets/css/styles.css' | prepend: site.baseurl }}">
+    {% if site.google_analytics %}
+      <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics }}"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '{{ site.google_analytics }}');
+      </script>
+    {% endif %}
+    <meta charset="UTF-8">
 
-</head>
+{% seo %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">{{ page.title | default: site.title | default: site.github.repository_name }}</h1>
+      <h2 class="project-tagline">{{ page.description | default: site.description | default: site.github.project_tagline }}</h2>
+      <a href="/about" class="btn">About Us</a>
+      <a href="/white_paper" class="btn">White Papers</a>
+      <a href="/bioinformatics" class="btn">Bioinformatics Resources</a>
+      <a href="/training" class="btn">Training Resources</a>
+      <br>
+      {% if site.github.is_project_page %}
+        <a href="https://github.com/OxfordCMS" class="header_link">Visit our GitHub</a>
+      {% endif %}
+      {% if site.show_downloads %}
+        <a href="{{ site.github.zip_url }}" class="btn">Download .zip</a>
+        <a href="{{ site.github.tar_url }}" class="btn">Download .tar.gz</a>
+      {% endif %}
+      <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item"><a href="{{ page.parent_url }}">{{ page.parent }}</a></li>
+          <li class="breadcrumb-item active">{{page.title}}</li>
+      </ol>
+    </header>
 
-<body class="{{ color }}">
-    <div class="page-wrapper">
+    <sidebar>
+        {% for post in site.posts %}
+        {% if post.categories contains "{{page.categories}}" %}
+            <a class="sidebar" href="{{ post.url }}">{{ post.title }}</a>
+        {% endif %}
+        {% endfor %}
+    </sidebar>
 
-        <!-- ******header****** -->
-        <header id="header" class="header">
-            <div class="container">
-                <div class="branding">
-                    <h1 class="logo"><a href="/">
-                            <span class="icon_documents_alt icon" aria-hidden="true"></span>
-                            <span class="text-highlight">OCMS</span>
-                            <span class="text-bold">Blog</span>
-                        </a></h1>
-                </div>
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/">Home</a></li>
-                    <li class="breadcrumb-item"><a href="{{ page.parent_url}}">{{ page.parent }}</a></li>
-                    <li class="breadcrumb-item active">{{ page.title }}</li>
-                </ol>
-            </div><!--//container-->
-        </header><!--//header-->
+    <main id="content" class="main-content" role="main">
+      {{ content }}
 
-        <!--*****doc-wrapper*****-->
-        <div class="doc-wrapper">
-            <div class="container">
-                <!--doc-header-->
-                <div id="doc-header" class="doc-header text-center">
-                    <h1 class="doc-title">{{ page.title }}</h1>
-                    <div class="meta"><i class="fa fa-clock"></i> Updated: {{ page.updated }}</div>
-                </div><!--//doc-header-->
-
-                <!--*****section*****-->
-                <div class="doc-body row">
-                    <!--doc-content-->
-                    <div class="doc-content col-12 order-1">
-                        <div class="content-inner">
-                            <section id="content-section" class="doc-section">
-                                <div class="section-block">
-                                    <p>{% include anchor_headings.html html=content anchorBody="#" anchorClass="anchor_heading" %}</p>
-                                </div>
-                            </section>
-                        </div><!--//content-inner-->
-                    </div><!--//doc-content-->
-                </div><!--doc-body-->
-            </div><!--container-->
-        </div><!--//doc-wrapper-->
-
-
-
-
-    </div><!--//page-wrapper-->
-
-    {% include footer.html %}
-
-    <!-- Main Javascript -->
-    <script type="text/javascript" src="{{ 'assets/plugins/jquery-3.3.1.min.js' | prepend: site.baseurl }}"></script>
-    <script type="text/javascript" src="{{ 'assets/plugins/bootstrap/js/bootstrap.min.js' | prepend: site.baseurl }}"></script>
-    <script type="text/javascript" src="{{ 'assets/plugins/prism/prism.js' | prepend: site.baseurl }}"></script>
-    <script type="text/javascript" src="{{ 'assets/plugins/jquery-scrollTo/jquery.scrollTo.min.js' | prepend: site.baseurl }}"></script>
-    <script type="text/javascript" src="{{ 'assets/plugins/stickyfill/dist/stickyfill.min.js' | prepend: site.baseurl }}"></script>
-    <script type="text/javascript" src="{{ 'assets/js/main.js' | prepend: site.baseurl }}"></script>
-
-</body>
+      <footer class="site-footer">
+        {% if site.github.is_project_page %}
+          <span class="site-footer-owner"><a href="{{ site.github.repository_url }}">{{ site.github.repository_name }}</a> is maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a>.</span>
+        {% endif %}
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
 </html>
