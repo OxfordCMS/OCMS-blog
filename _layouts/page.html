@@ -44,13 +44,13 @@
       </ol>
     </header>
 
-    <sidebar>
+    <toc class="toc">
         {% for post in site.posts %}
         {% if post.categories contains {{page.categories}} %}
-            <a class="sidebar" href="{{ post.url }}">{{ post.title }}</a>
+            <h2 class="toc"><a class="toc" href="{{ post.url }}">{{ post.title }}</a></h2>
         {% endif %}
         {% endfor %}
-    </sidebar>
+    </toc>
 
     <main id="content" class="main-content" role="main">
       {{ content }}
