@@ -1,5 +1,5 @@
 ---
-layout: training
+layout: post
 title: Training Resources
 categories: training
 permalink: /training
