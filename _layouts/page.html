@@ -22,31 +22,13 @@
   <body>
     <header class="page-header" role="banner">
       <h1 class="project-name">{{ page.title | default: site.title | default: site.github.repository_name }}</h1>
-      <h2 class="project-tagline">{{ page.description | default: site.description | default: site.github.project_tagline }}</h2>
 
       <a href="/" class="btn">Home</a>
-      <a href="/about" class="btn">About Us</a>
-      <a href="/white_paper" class="btn">White Papers</a>
-      <a href="/bioinformatics" class="btn">Bioinformatics Resources</a>
-      <a href="/training" class="btn">Training Resources</a>
-      <br>
-      {% if site.github.is_project_page %}
-        <a href="https://github.com/OxfordCMS" class="header_link">Visit our GitHub</a>
-      {% endif %}
-      {% if site.show_downloads %}
-        <a href="{{ site.github.zip_url }}" class="btn">Download .zip</a>
-        <a href="{{ site.github.tar_url }}" class="btn">Download .tar.gz</a>
-      {% endif %}
-
-      <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/">Home</a></li>
-          <li class="breadcrumb-item active">{{page.title}}</li>
-      </ol>
     </header>
 
     <toc class="toc">
         {% for post in site.posts %}
-        {% if post.categories contains {{page.categories}} %}
+        {% if post.categories contains page.categories %}
             <h2 class="toc"><a class="toc" href="{{ post.url }}">{{ post.title }}</a></h2>
         {% endif %}
         {% endfor %}
