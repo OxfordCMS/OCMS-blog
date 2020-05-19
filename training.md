@@ -1,5 +1,5 @@
 ---
-layout: training
+layout: page
 title: Training Resources
 categories: training
 permalink: /training

@@ -1,5 +1,5 @@
 ---
-layout: white_paper
+layout: page
 title: White Papers
 categories: white_paper
 permalink: /white_paper
