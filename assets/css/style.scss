@@ -1,0 +1,69 @@
+---
+---
+
+/* header */
+.header_link {
+    color: white;
+    opacity: 0.7;
+
+    &:hover {
+    text-decoration: underline;
+  }
+}
+
+/* toc */
+
+toc {
+    text-align: left;
+	background-color: #FBFAF7;
+    color: #fff
+}
+
+.toc {
+    text-align: left;
+	background-color: #FBFAF7;
+    color: #159957;
+    padding-left: 52px;
+}
+
+p.toc {
+	font-size: 16px;
+}
+
+h1.toc {
+	font-family: Arvo, sans-serif;
+	font-size: 30px;
+	font-weight: 300;
+	line-height: 1.3em;
+	border-bottom: none;
+	margin-top: 0;
+    color: #159957
+}
+
+
+h1.toc, a.toc, a.name, toc a{
+	color: #159957;
+}
+
+a.toc {
+    color: #159957;
+    font-weight:200;
+    text-decoration:none;
+
+    &:hover {
+	text-decoration: underline;
+}
+
+}
+
+a.name {
+	white-space: nowrap;
+}
+
+toc ul {
+  list-style:none;
+  padding:0;
+}
+
+
+@import 'jekyll-theme-cayman';

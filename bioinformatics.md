@@ -1,5 +1,5 @@
 ---
-layout: bioinformatics
+layout: page
 title: Bioinformatics
 categories: bioinformatics
 permalink: /bioinformatics

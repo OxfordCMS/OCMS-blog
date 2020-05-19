@@ -29,44 +29,18 @@ assets:
     sources:
         _assets
 # Build settings
-theme: jekyll-theme-prettydocs
+theme: jekyll-theme-cayman
 plugins:
   - jekyll-feed
 
-branding_title: >-
-    <span aria-hidden="true" class="icon_documents_alt icon"></span>
-    <span class="text-highlight">OCMS</span><span class="text-bold">Blog</span>
+show_downloads: false
+github:
+    organization_url: https://github.com/OxfordCMS
+    username: OxfordCMS
+    is_project_page: true
 
-tagline: Zippy tagline *finger pistols*
-
-socials: true
-social_github: true
-social_facebook: false
-social_twitter: false
-twitter_username: jekyllrb
-github_repository: OCMS_Example_16SrRNA
-github_username: OxfordCMS
-
-cards_title: Welcome to the Oxford Centre for Microbiome Studies blog!
 download_button: false
-card_start_title: About Us
-card_start_intro: More about the OCMS and the people behind the research centre.
-card_start_link: /about
 
-card_components_title: Training Resources
-card_components_intro: Learn more about theories and technologies involved in microbiome research.
-card_components_link: /training
-
-card_charts_title: White Papers
-card_charts_intro: Perspectives and findings from internal research conducted at the OCMS.
-card_charts_link: /white_paper
-
-card_showcase_title: Bioinformatics
-card_showcase_intro: Tutorials and how-to's for analysis of microbiome data.
-card_showcase_link: /bioinformatics
-
-card_faqs: false
-card_license: false
 # Exclude from processing.
 # The following items will not be processed, by default.
 # Any item listed under the `exclude:` key here will be automatically added to
