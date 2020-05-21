@@ -3,7 +3,7 @@ layout: page
 title: Training Resources
 categories: training
 permalink: /training
-color: pink
+description: Learn more on theories and technologies involved in microbiome research.
 updated: today
 ---
 

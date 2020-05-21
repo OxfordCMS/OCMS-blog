@@ -3,7 +3,7 @@ layout: page
 title: Bioinformatics
 categories: bioinformatics
 permalink: /bioinformatics
-color: turquoise
+description: Tutorials on bioinformatics tools and analyses for microbiome data
 updated: today
 ---
 

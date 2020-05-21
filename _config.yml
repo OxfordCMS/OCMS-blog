@@ -27,7 +27,7 @@ url: "https://oxfordcms.github.io/OCMS-blog/" # the base hostname & protocol for
 markdown: kramdown
 assets:
     sources:
-        _assets
+        assets
 # Build settings
 theme: jekyll-theme-cayman
 plugins:
