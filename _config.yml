@@ -23,7 +23,7 @@ email: ocms@kennedy.ox.ac.uk
 description: >-
   This is where we, the OCMS, share our findings, perspectives, and training resources pertaining to microbiome research.
 baseurl: "/OCMS-blog" # the subpath of your site, e.g. /blog
-url: "https://oxfordcms.github.io/OCMS-blog/" # the base hostname & protocol for your site, e.g. http://example.com
+url: "" # the base hostname & protocol for your site, e.g. http://example.com
 markdown: kramdown
 assets:
     sources:
