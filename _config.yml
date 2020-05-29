@@ -33,13 +33,10 @@ theme: jekyll-theme-cayman
 plugins:
   - jekyll-feed
 
-show_downloads: false
 github:
     organization_url: https://github.com/OxfordCMS
     username: OxfordCMS
     is_project_page: true
-
-download_button: false
 
 # Exclude from processing.
 # The following items will not be processed, by default.
