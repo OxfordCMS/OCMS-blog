@@ -2,7 +2,7 @@
 layout: page
 title: Training Resources
 categories: training
-permalink: /training
+permalink: /OCMS-blog/training
 description: Learn more on theories and technologies involved in microbiome research.
 updated: today
 ---

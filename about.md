@@ -3,7 +3,7 @@ layout: page
 title: About Us
 updated: 4 May 2020
 categories: about
-permalink: /about
+permalink: /OCMS-blog/about
 color: green
 ---
 
