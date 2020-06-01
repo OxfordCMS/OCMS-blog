@@ -6,6 +6,8 @@ categories: bioinformatics
 permalink: /bioinformatics/OCMSExplorer
 toclink: /OCMS-blog/bioinformatics/OCMSExplorer
 excerpt_separator: <!--more-->
+author: Sandi Yen
+contributors: Nick Ilott, Jethro Johnson
 updated: 11 May 2020
 parent: Bioinformatics Resources
 parent_url: /OCMS-blog/bioinformatics

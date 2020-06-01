@@ -5,6 +5,7 @@ date:   2020-05-07
 categories: bioinformatics
 permalink: /bioinformatics/Example-16S-rRNA-Analysis
 toclink: /OCMS-blog/bioinformatics/Example-16S-rRNA-Analysis
+author: Nick Ilott
 excerpt_separator: <!--more-->
 updated: 11 May 2020
 color: turquoise
