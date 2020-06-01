@@ -9,7 +9,7 @@ excerpt_separator: <!--more-->
 updated: 11 May 2020
 color: turquoise
 parent: Bioinformatics Resources
-parent_url: /bioinformatics
+parent_url: /OCMS-blog/bioinformatics
 ---
 
 {% include ocms_example_16SrRNA.html %}
