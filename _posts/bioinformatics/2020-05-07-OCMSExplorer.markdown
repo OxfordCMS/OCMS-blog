@@ -4,10 +4,11 @@ title:  "OCMSExplorer Tutorial"
 date:   2020-05-07
 categories: bioinformatics
 permalink: /bioinformatics/OCMSExplorer
+toclink: /OCMS-blog/bioinformatics/OCMSExplorer
 excerpt_separator: <!--more-->
 updated: 11 May 2020
 parent: Bioinformatics Resources
-parent_url: /bioinformatics
+parent_url: /OCMS-blog/bioinformatics
 ---
 
 ## About OCMSExplorer

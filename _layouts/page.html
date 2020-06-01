@@ -23,13 +23,12 @@
     <header class="page-header" role="banner">
       <h1 class="project-name">{{ page.title | default: site.title | default: site.github.repository_name }}</h1>
     <h2 class="project-tagline">{{ page.description }}</h2>
-      <a href="/OCMS-blog" class="btn">Home</a>
+      <a href="/OCMS-blog/" class="btn">Home</a>
     </header>
-
     <toc class="toc">
         {% for post in site.posts %}
         {% if post.categories contains page.categories %}
-            <h2 class="toc"><a class="toc" href="{{ post.url }}">{{ post.title }}</a></h2>
+            <h2 class="toc"><a class="toc" href="{{ post.toclink }}">{{ post.title }}</a></h2>
         {% endif %}
         {% endfor %}
     </toc>

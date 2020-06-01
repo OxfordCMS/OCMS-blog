@@ -10,7 +10,7 @@ updated: today
 <ul>
 {% for post in site.posts %}
     {% if post.categories contains "training" %}
-        <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
+        <h2><a href="{{ post.toclink }}">{{ post.title }}</a></h2>
         {{post.content}}
     {% endif %}
 {% endfor %}

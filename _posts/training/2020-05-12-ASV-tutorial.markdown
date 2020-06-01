@@ -4,10 +4,11 @@ title:  "Amplicon Sequence Variant Detection With DADA2"
 date:   2020-05-12
 categories: training
 permalink: /training/Amplicon-Sequence-Variant-Detection-With-DADA2
+toclink: /OCMS-blog/training/Amplicon-Sequence-Variant-Detection-With-DADA2
 excerpt_separator: <!--more-->
 updated: 11 May 2020
 parent: Training
-parent_url: /training
+parent_url: /OCMS-blog/training
 ---
 
 ## DADA2: Improving Taxonomic Resolution
