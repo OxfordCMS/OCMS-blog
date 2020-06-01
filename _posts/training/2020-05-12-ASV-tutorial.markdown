@@ -6,6 +6,7 @@ categories: training
 permalink: /training/Amplicon-Sequence-Variant-Detection-With-DADA2
 toclink: /OCMS-blog/training/Amplicon-Sequence-Variant-Detection-With-DADA2
 excerpt_separator: <!--more-->
+author: Jethro Johnson
 updated: 11 May 2020
 parent: Training
 parent_url: /OCMS-blog/training
