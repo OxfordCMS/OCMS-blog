@@ -2,7 +2,7 @@
 layout: page
 title: Bioinformatics
 categories: bioinformatics
-permalink: /OCMS-blog/bioinformatics
+permalink: /bioinformatics
 description: Tutorials on bioinformatics tools and analyses for microbiome data
 updated: today
 ---
