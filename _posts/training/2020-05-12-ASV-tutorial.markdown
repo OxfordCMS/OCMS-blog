@@ -100,13 +100,13 @@ carried out in RStudio.
 
 Nagivate to your RStudio session and open a new R script.
 
-![RStudio]({{ site.baseurl }}/assets/images/new_rscript.png)
+![RStudio]({{ site.baseurl }}/assets/images/train_001/new_rscript.png)
 
 Remember, you can write (and comment!) code in your new R script then run it via
 the R terminal, either by copying and pasting it across, or by highlighting
 it and selecting the `Run` icon in the top-right side of your script window.
 
-![RStudio]({{ site.baseurl }}/assets/images/rstudio_run.png)
+![RStudio]({{ site.baseurl }}/assets/images/train_001/rstudio_run.png)
 
 <br>
 
@@ -141,7 +141,7 @@ plotQualityProfile(c(fastq1, fastq2))
 
 {% endhighlight %}
 
-![RStudio]({{ site.baseurl }}/assets/images/dada2_quality_plot.png)
+![RStudio]({{ site.baseurl }}/assets/images/train_001/dada2_quality_plot.png)
 
 In this plot lines show the mean (green), median (orange) and 25th/75th
 percentiles (dashed) of the quality score at each base position in the forward
@@ -210,7 +210,7 @@ overlap between reads during amplicon assembly.
 The histogram below shows a typical distribution in the length of amplicons generated
 from a human gut microbiome study.
 
-![RStudio]({{ site.baseurl }}/assets/images/histogram.png)
+![RStudio]({{ site.baseurl }}/assets/images/train_001/histogram.png)
 
 > What biases may be introduced by setting a stringent `truncLen` value?
 
@@ -341,7 +341,7 @@ pasting individual sequences into the [online BLAST portal][blast]. Then selecti
 the highly-curated NCBI 16S rRNA database as a reference.
 
 
-![BLAST]({{ site.baseurl }}/assets/images/blast_image.png)
+![BLAST]({{ site.baseurl }}/assets/images/train_001/blast_image.png)
 
 
 >Try running BLAST for the most and least abundant ASVs in your output fasta file.
@@ -419,7 +419,7 @@ observed (left) and predicted (right) frequency of nucleotide substitutions occu
 (~1500bp) 16S genes present in the genome of Escherichia coli strain K-12 subst. MG1655. In total five of these
 seven 16S genes are unique, while the remaining two are identical.
 
-![Ecoli]({{ site.baseurl }}/assets/images/e_coli.png)
+![Ecoli]({{ site.baseurl }}/assets/images/train_001/e_coli.png)
 
 >How many E. coli ASVs were detected by DADA2?
 
