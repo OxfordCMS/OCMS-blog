@@ -10,6 +10,7 @@ author: Jethro Johnson
 updated: 11 May 2020
 parent: Training
 parent_url: /OCMS-blog/training
+postid: train_001
 ---
 
 ## DADA2: Improving Taxonomic Resolution

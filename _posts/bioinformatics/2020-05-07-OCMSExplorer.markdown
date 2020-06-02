@@ -11,6 +11,7 @@ contributors: Nick Ilott, Jethro Johnson
 updated: 11 May 2020
 parent: Bioinformatics Resources
 parent_url: /OCMS-blog/bioinformatics
+postid: bioin_001
 ---
 
 ## About OCMSExplorer
