@@ -20,6 +20,6 @@ OCMS exists to expand microbiome research capabilities within the UK and oversea
 
 Please meet the members of our team who are regular contributors to these pages:
 
-![Beaker]({{ site.baseurl }}/images/beaker.jpg)
+![Beaker]({{ site.baseurl }}/assets/images/beaker.jpg)
 
 [KIR]: https://www.kennedy.ox.ac.uk/technologies/centre-for-microbiome-studies
