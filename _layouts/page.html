@@ -20,17 +20,17 @@
     <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
   </head>
   <body>
-    <header class="page-header" role="banner">
-      <h1 class="project-name">{{ page.title | default: site.title | default: site.github.repository_name }}</h1>
-    <h2 class="project-tagline">{{ page.description }}</h2>
-      <a href="/OCMS-blog/" class="btn">Home</a>
-    </header>
+
+    {% include header.html %}
+
     <toc class="toc">
+        <hr>
         {% for post in site.posts %}
         {% if post.categories contains page.categories %}
             <h2 class="toc"><a class="toc" href="{{ post.toclink }}">{{ post.title }}</a></h2>
         {% endif %}
         {% endfor %}
+        <hr>
     </toc>
 
     <main id="content" class="main-content" role="main">
