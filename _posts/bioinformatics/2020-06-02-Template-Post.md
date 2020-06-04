@@ -68,7 +68,7 @@ You can insert figures are reference those figures in text by placing an anchor 
 **Figure 1. Give a figure caption in bold**
 
 You can insert a table:
-1. save your data as csv file with no spaces in the file name.
+1. save your data as csv file with no spaces in the file name. Data files will be stored in `_data` in blog directory.
 2. replace `mytable` in the code below with the name of your csv file (no extension).
 3. Similar to linking to figures, you can give your table an anchor to create a link to [your table](#mytable_anchor).
 
