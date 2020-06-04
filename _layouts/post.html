@@ -20,19 +20,24 @@
     <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
   </head>
   <body>
-    <header class="page-header" role="banner">
-      <h1 class="project-name">{{ page.title | default: site.title | default: site.github.repository_name }}</h1>
-      <br>
-      <a href="/OCMS-blog/" class="btn">Home</a>
-      <a href="{{ page.parent_url }}" class="btn">{{ page.parent }}</a>
-      <br>
-
-    </header>
+    {% include header.html %}
 
     <main id="content" class="main-content" role="main">
+
+        <script src="https://unpkg.com/vanilla-back-to-top@7.2.1/dist/vanilla-back-to-top.min.js"></script>
+        <script>addBackToTop({
+          diameter: 56,
+          backgroundColor: '#69706E',
+          textColor: '#fff'
+        })</script>
+
     <br>
-    <p>Author: {{ page.author }}</p>
-    <p>Contributors: {{ page.contributors }}</p>
+    <p>
+        Author: {{ page.author }} <br>
+        Contributors: {{ page.contributors }} <br>
+        Updated: {{ page.updated}}
+    </p>
+
     <br>
       {{ content }}
 

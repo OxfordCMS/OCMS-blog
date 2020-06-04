@@ -19,25 +19,27 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
   </head>
+
   <body>
-    <header class="page-header" role="banner">
-        <h1 class="project-name">{{ page.title | default: site.title | default: site.github.repository_name }}</h1>
-        <h2 class="project-tagline">{{ page.description | default: site.description | default: site.github.project_tagline }}</h2>
 
-        <a href="/OCMS-blog/" class="btn">Home</a>
-        <a href="/OCMS-blog/white_paper" class="btn">White Papers</a>
-        <a href="/OCMS-blog/bioinformatics" class="btn">Bioinformatics</a>
-        <a href="/OCMS-blog/training" class="btn">Training Resources</a>
-        <br>
-        {% if site.github.is_project_page %}
-            <a href="https://github.com/OxfordCMS" class="header_link">Visit our         GitHub</a>
-        {% endif %}
-        {% if site.show_downloads %}
-            <a href="{{ site.github.zip_url }}" class="btn">Download .zip</a>
-            <a href="{{ site.github.tar_url }}" class="btn">Download .tar.gz</a>
-        {% endif %}
+      <header class="page-header" role="banner">
+          <h1 class="project-name">{{ page.title | default: site.title | default: site.github.repository_name }}</h1>
+          <h2 class="project-tagline">{{ page.description | default: site.description | default: site.github.project_tagline }}</h2>
 
-    </header>
+          <a href="/OCMS-blog/" class="btn">Home</a>
+          <a href="/OCMS-blog/white_paper" class="btn">White Papers</a>
+          <a href="/OCMS-blog/bioinformatics" class="btn">Bioinformatics</a>
+          <a href="/OCMS-blog/training" class="btn">Training Resources</a>
+          <br>
+          {% if site.github.is_project_page %}
+              <a href="https://github.com/OxfordCMS" class="header_link">Visit our         GitHub</a>
+          {% endif %}
+          {% if site.show_downloads %}
+              <a href="{{ site.github.zip_url }}" class="btn">Download .zip</a>
+              <a href="{{ site.github.tar_url }}" class="btn">Download .tar.gz</a>
+          {% endif %}
+
+      </header>
 
     <main id="content" class="main-content" role="main">
         <p>Welcome to the OCMS Blog pages. Via these pages you can get access to blog posts, white papers and online training material posted by members of our team.
