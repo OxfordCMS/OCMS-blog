@@ -92,6 +92,9 @@ You can insert a table:
 <!-- link definition -->
 [thislink]: https://oxfordcms.github.io/OCMS-blog/
 
+## Submitting your blog post
+Once you have written your blog as a markdown file (`.md`), email Sandi your blog file and all associated figure and table files. Blog contributors will be featured on the home page :)
+
 ## Template Markdown Code<a name="mdcode"></a>
 
 {% highlight R %}
@@ -111,7 +114,6 @@ postid: bioin_00x
 ---
 
 ## Executive Summary
-
 All posts will start with an executive summary. This is a
 brief (1-2 paragraphs) summary of findings from the report and any findings/actionables/recommendations that stem from the study. The executive summary will be the excerpt of the post shown when listing all posts.
 
@@ -133,6 +135,7 @@ Note that categories _must_ be one of the following, depending on the type of co
 * `bioinformatics`
 * `training`
 
+The markdown code used to generate this template post can be found at the bottom of this post. [mdpost](#mdpost)
 ## Section Title
 
 Add any sections and text. Generally, lab report style of Intro, Objective, Methods, Results/Discussion Conclusion works well. Keep in mind that this is an outward facing platform, where readers are likely current and prospective client/collaborators. We will try to keep content targeted to a generic scientific audience.
@@ -188,4 +191,8 @@ You can insert a table:
 
 <!-- link definition -->
 [thislink]: https://oxfordcms.github.io/OCMS-blog/
+
+## Submitting your blog post
+Once you have written your blog as a markdown file (`.md`), email Sandi your blog file and all associated figure and table files. Blog contributors will be featured on the home page :)
+
 {% endhighlight %}
