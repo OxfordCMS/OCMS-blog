@@ -65,5 +65,45 @@ toc ul {
   padding:0;
 }
 
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 8vw);
+    grid-gap: 25px;
+}
 
+.gallery__img {
+    float: center;
+    width:  250px;
+    height: 250px;
+    object-fit: scale-down;
+}
+
+.gallery__item--1 {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 3;
+}
+
+.gallery__item--2 {
+    grid-column-start: 3;
+    grid-column-end: 5;
+    grid-row-start: 1;
+    grid-row-end: 3;
+}
+
+.gallery__item--3 {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 3;
+    grid-row-end: 5;
+}
+
+.gallery__item--4 {
+    grid-column-start: 3;
+    grid-column-end: 5;
+    grid-row-start: 3;
+    grid-row-end: 5;
+}
 @import 'jekyll-theme-cayman';

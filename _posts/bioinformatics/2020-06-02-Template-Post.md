@@ -97,7 +97,7 @@ Once you have written your blog as a markdown file (`.md`), email Sandi your blo
 
 ## Template Markdown Code<a name="mdcode"></a>
 
-{% highlight R %}
+{% highlight markdown %}
 ---
 layout: post
 title:  Template Post
@@ -114,6 +114,8 @@ postid: bioin_00x
 ---
 
 ## Executive Summary
+This post serves as an example and how-to on how to write a markdown file and how to create a blog post on the OCMS blog.
+
 All posts will start with an executive summary. This is a
 brief (1-2 paragraphs) summary of findings from the report and any findings/actionables/recommendations that stem from the study. The executive summary will be the excerpt of the post shown when listing all posts.
 
