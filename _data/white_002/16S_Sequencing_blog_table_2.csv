@@ -1,0 +1,11 @@
+﻿Species, Expected 16S rRNA abundance %,Expected Shotgun metagenomics abundance %
+Pseudomonas aeruginosa,4.2,12
+Escherichia coli,10.1,12
+Salmonella enterica,10.4,12
+Lactobacillus fermentum,18.4,12
+Enterococcus faecalis,9.9,12
+Staphylococcus aureus,15.5,12
+Listeria monocytogenes,14.1,12
+Bacillus subtilis,17.4,12
+Saccharomyces cerevisiae,NA,2
+Cryptococcus neoformans,NA,2
