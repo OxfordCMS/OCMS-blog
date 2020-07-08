@@ -1,10 +1,8 @@
-﻿ZymoBIOMICS Community Standard,Ct,Relative amount,Volume added (x20) (uL)
-1:100,18.482,0.62,12.4
-1:1000,23.977,0.81,16.2
-1:10000,24.849,0.84,16.8
-1:100000,29.721,1,20
-1:1000000,-,1,20
-PBS Control,-,1,20
-ZymoBIOMICS DNA Standard (#D6305),17.157,0.58,11.6
-dH2O PCR Control,-,1,20
-,,Total volume,137
+﻿ZymoBIOMICS Community Standard,Concentration (Cells/mL),Total cells per dilution tube (1500uL),Total cells added per extraction condition (200uL),Nanodrop DNA concentration (ng/uL),Total DNA yield (ng)
+1:100,140000000,210000000,28000000,2.1,42
+1:1000,14000000,21000000,2800000,1,20
+1:10000,1400000,2100000,280000,0.7,14
+1:100000,140000,210000,28000,0.9,18
+1:1000000,14000,21000,2800,0.8,16
+PBS Control,–,–,–,1,20
+ZymoBIOMICS DNA Standard (#D6305),–,–,–,Supplied at 10ng/uL,–
