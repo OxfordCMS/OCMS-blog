@@ -44,6 +44,7 @@ There is an example dataset available in the Import tab (toggle the `Example dat
 As part of the OCMS 16S analysis pipeline, the count and taxonomy tables are exported as a `SQLite` database file called `csvdb`. This file is uploaded as the `Database file`. The upload may take a few minutes if the dataset contains several hundred samples. If your raw 16S data was not processed by the OCMS pipeline, there is a helper function in the `OCMSExplorer` package that creates a `SQLite` database file from either R dataframes or from csv or tsv files:
 {% highlight R %}
 OCMSExplorer::create_db(counts, taxonomy, overwrite = FALSE, outdir, fromfile = FALSE)
+
 # for details on function usage
 ?OCMSExplorer::create_db
 {% endhighlight %}
