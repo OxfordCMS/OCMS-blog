@@ -1,10 +1,10 @@
 ---
 layout: post
-title:  "OCMSExplorer Tutorial"
+title:  "OCMSlooksy Tutorial"
 date:   2020-05-07
 categories: bioinformatics
-permalink: /bioinformatics/OCMSExplorer
-toclink: /OCMS-blog/bioinformatics/OCMSExplorer
+permalink: /bioinformatics/OCMSlooksy
+toclink: /OCMS-blog/bioinformatics/OCMSlooksy
 excerpt_separator: <!--more-->
 author: Sandi Yen
 contributors: Nick Ilott, Jethro Johnson
@@ -14,39 +14,39 @@ parent_url: /OCMS-blog/bioinformatics
 postid: bioin_001
 ---
 
-## About OCMSExplorer
-OCMSExplorer is a visualization tool designed for 16S rRNA gene sequence data. It is a `R Shiny` app that is distributed as a `R` package. Even though this tool was created as an extension of the 16S rRNA gene analysis pipeline within OCMS, 16S data generated from other pipelines may be used, given that the input file formats are compatible.
+## About OCMSlooksy
+OCMSlooksy is a visualization tool designed for 16S rRNA gene sequence data. It is a `R Shiny` app that is distributed as a `R` package. Even though this tool was created as an extension of the 16S rRNA gene analysis pipeline within OCMS, 16S data generated from other pipelines may be used, given that the input file formats are compatible.
 
-## Installing OCMSExplorer
-The app is still under development, but it can be installed from the github page. To install OCMSExplorer, use the following in your R console:
+## Installing OCMSlooksy
+The app is still under development, but it can be installed from the github page. To install OCMSlooksy, use the following in your R console:
 
 {% highlight R %}
-devtools::install_local("path/to/OCMSExplorer-30-07-2020.tar.gz")
+devtools::install_local("path/to/OCMSlooksy-30-07-2020.tar.gz")
 {% endhighlight %}
 <!--more-->
 
-## Launching OCMSExplorer
+## Launching OCMSlooksy
 The app is launched from your R console by:
 
 {% highlight R %}
-library(OCMSExplorer)
+library(OCMSlooksy)
 run_app()
 {% endhighlight %}
 
 This will open the app in your web browser. If pop-ups have been blocked by your browser, you may have to allow them for the app.
 
-## Using OCMSExplorer
+## Using OCMSlooksy
 The app is laid out such that all major tasks in the analysis process are shown across the top, where each task is given its own tab. Sub-tasks are shown in the sidebar on the left.
 
 ### Import: Uploading your data
 There is an example dataset available in the Import tab (toggle the `Example data` switch to enable/disable). When enabled, you can browser through all the entire app using this dataset.
 
-As part of the OCMS 16S analysis pipeline, the count and taxonomy tables are exported as a `SQLite` database file called `csvdb`. This file is uploaded as the `Database file`. The upload may take a few minutes if the dataset contains several hundred samples. If your raw 16S data was not processed by the OCMS pipeline, there is a helper function in the `OCMSExplorer` package that creates a `SQLite` database file from either R dataframes or from csv or tsv files:
+As part of the OCMS 16S analysis pipeline, the count and taxonomy tables are exported as a `SQLite` database file called `csvdb`. This file is uploaded as the `Database file`. The upload may take a few minutes if the dataset contains several hundred samples. If your raw 16S data was not processed by the OCMS pipeline, there is a helper function in the `OCMSlooksy` package that creates a `SQLite` database file from either R dataframes or from csv or tsv files:
 {% highlight R %}
-OCMSExplorer::create_db(counts, taxonomy, overwrite = FALSE, outdir, fromfile = FALSE)
+OCMSlooksy::create_db(counts, taxonomy, overwrite = FALSE, outdir, fromfile = FALSE)
 
 # for details on function usage
-?OCMSExplorer::create_db
+?OCMSlooksy::create_db
 {% endhighlight %}
 
 The format of the count table should be: features (ASVs or OTUs) in rows, in a column called `featureID`, and samples in columns.
